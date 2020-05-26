@@ -32,8 +32,8 @@ public class ItemDao {
 		for(Filtro filtro : filtros) {
 			for (Item item : todosItens) {
 				
-				String tipo = filtro.getTipo().getNome();
-				String nome = filtro.getNome();
+				String tipo = filtro.getTipo().getNome().toUpperCase();
+				String nome = filtro.getNome().toUpperCase();
 				
 				if(itemPossuiTipo(item, tipo) && itemPossuiNome(item, nome)){
 					resultados.add(item);
@@ -50,11 +50,11 @@ public class ItemDao {
 	}
 	
 	private boolean itemPossuiNome(Item item, String nome) {
-		return item.getNome().contains(nome);
+		return item.getNome().toUpperCase().contains(nome);
 	}
 
 	private boolean itemPossuiTipo(Item item, String tipo) {
-		return item.getTipo().equals(tipo);
+		return item.getTipo().toUpperCase().equals(tipo);
 	}
 	
 	public Item quantidadeDo(String codigo) {
