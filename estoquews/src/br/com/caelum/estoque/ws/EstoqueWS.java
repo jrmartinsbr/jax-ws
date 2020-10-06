@@ -12,7 +12,11 @@ import br.com.caelum.estoque.modelo.item.Filtro;
 import br.com.caelum.estoque.modelo.item.Filtros;
 import br.com.caelum.estoque.modelo.item.Item;
 import br.com.caelum.estoque.modelo.item.ItemDao;
+import br.com.caelum.estoque.modelo.item.ItemValidador;
 import br.com.caelum.estoque.modelo.item.ListaItens;
+import br.com.caelum.estoque.modelo.usuario.AutorizacaoException;
+import br.com.caelum.estoque.modelo.usuario.TokenDao;
+import br.com.caelum.estoque.modelo.usuario.TokenUsuario;
 
 @WebService
 public class EstoqueWS {
@@ -31,8 +35,22 @@ public class EstoqueWS {
 	
 	@WebMethod(operationName = "CadastrarItem")
 	@WebResult(name = "item")
-	public Item cadastrarItem(@WebParam(name = "item") Item item) {
+	public Item cadastrarItem(
+			@WebParam(name = "tokenUsuario", header=true) TokenUsuario usuario,
+			@WebParam(name = "item") Item item) 
+					throws AutorizacaoException {
+		
+		System.out.println("Cadastrando itens");
+		
+		boolean ehValido = new TokenDao().ehValido(usuario);
+		
+		if (!ehValido) {
+			throw new AutorizacaoException("Falha na autenticação!");
+		}
+		
+		new ItemValidador(item).validate();
 		this.dao.cadastrar(item);
+		System.out.println("Item cadastrado: " + item);
 		return item;
 	}
 
