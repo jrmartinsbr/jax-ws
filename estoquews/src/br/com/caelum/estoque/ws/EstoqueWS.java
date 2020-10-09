@@ -1,5 +1,8 @@
 package br.com.caelum.estoque.ws;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.Date;
 import java.util.List;
 
 import javax.jws.WebMethod;
@@ -38,7 +41,10 @@ public class EstoqueWS {
 	public Item cadastrarItem(
 			@WebParam(name = "tokenUsuario", header=true) TokenUsuario usuario,
 			@WebParam(name = "item") Item item) 
-					throws AutorizacaoException {
+					throws AutorizacaoException, ParseException {
+		
+		Date data = new SimpleDateFormat("dd/MM/yyyy").parse("2015-12-ss31T00:00:00");
+		System.out.println(data);
 		
 		System.out.println("Cadastrando itens");
 		
